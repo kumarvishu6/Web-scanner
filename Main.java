@@ -17,65 +17,7 @@ public class Main {
             return false;
         }
     }
-    public static void XSS(String input){
-        String payload ="<script>alert('XSS')</script>";
-        String FullURL=input+payload;
-        try {
-            String url = FullURL;
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("GET");
-            int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                if (response.toString().contains("<script>") && response.toString().contains("alert(")) {
-                    System.out.println("URL IS VULNERABLE TO XSS");
-                } else {
-                    System.out.println("URL IS SAFE");
-                }
-            } else {
-                System.out.println("Request Failed | Response Code " + responseCode);
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-    public static void SQL(String input){
-        String payload ="'";
-        String FullURL=input+payload;
-        String url = FullURL;
-        try {
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("GET");
-            int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                if (response.toString().contains("SQL syntax") || response.toString().contains("Warning") || response.toString().contains("Unknown table")) {
-                    System.out.println("URL IS VULNERABLE TO SQL INJECTION");
-                } else {
-                    System.out.println("URL IS SAFE");
-                }
-            } else {
-                System.out.println("Request Failed | Response Code " + responseCode);
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
+   
     public static void PORT(String input){
         try {
             URL url = new URL(input);
@@ -118,9 +60,7 @@ public class Main {
             System.out.println("/                                      /");
             System.out.println("////////////////////////////////////////");
             System.out.println("/                                      /");
-            System.out.println("/        (1) XSS Scan                  /");
-            System.out.println("/        (2) SQL Injection Scan        /");
-            System.out.println("/        (3) Port Scan                 /");
+            System.out.println("/        (1) Port Scan                 /");
             System.out.println("/        (0) Exit                      /");
             System.out.println("/                                      /");
             System.out.println("////////////////////////////////////////");
@@ -131,25 +71,8 @@ public class Main {
             int choice = scan.nextInt();
 
             switch (choice) {
+                
                 case 1:
-                    System.out.println("");
-                    System.out.println("[ XSS Scan ]");
-                    System.out.println("( Example : https://example.com/index.php?id= )");
-                    Scanner s1= new Scanner(System.in);
-                    System.out.print("Enter URL : ");
-                    String url1= s1.nextLine();
-                    XSS(url1);
-                    break;
-                case 2:
-                    System.out.println("");
-                    System.out.println("[ SQL Injection Scan ]");
-                    System.out.println("( Example : https://example.com/index.php?id=55 )");
-                    Scanner s2= new Scanner(System.in);
-                    System.out.print("Enter URL : ");
-                    String url2= s2.nextLine();
-                    SQL(url2);
-                    break;
-                case 3:
                     System.out.println("[ Port Scan ]");
                     Scanner s3= new Scanner(System.in);
                     System.out.print("Enter URL : ");
